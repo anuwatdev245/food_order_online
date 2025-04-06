@@ -1,5 +1,6 @@
 package com.anuwat.food_order_online.model;
 
+import com.anuwat.food_order_online.dto.RestaurantDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,5 +31,7 @@ public class User {
     @JsonIgnore //ไม่มีกาโชว์ฟิวน์นี้
     @OneToMany
     private List<Order> orders = new ArrayList<>();
+
+    private List<RestaurantDto> favorites = new ArrayList();
 
 }
