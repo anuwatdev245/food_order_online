@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -25,5 +28,7 @@ public class User {
     private String password;
 
     private   USER_ROLE role;
+
+    private List<Order> orders = new ArrayList<>();
 
 }
