@@ -25,5 +25,7 @@ public class Order {
 
     private Date createAt;
 
+    @ManyToOne
+    private Address deliveryAddress;
 
 }
