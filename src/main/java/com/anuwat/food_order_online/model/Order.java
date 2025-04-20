@@ -3,6 +3,8 @@ package com.anuwat.food_order_online.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 public class Order {
 
@@ -16,5 +18,12 @@ public class Order {
     @JsonIgnore
     @ManyToOne
     private Restaurant restaurant;
+
+    private Long totalAmount;
+
+    private String orderStatus;
+
+    private Date createAt;
+
 
 }
