@@ -2,10 +2,17 @@ package com.anuwat.food_order_online.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
 
     @Id
@@ -27,5 +34,14 @@ public class Order {
 
     @ManyToOne
     private Address deliveryAddress;
+
+    @OneToMany
+    private List<OrderItem> items;
+
+//    private Payment payment;
+
+    private int totalItem;
+
+    private int totalPrice;
 
 }
