@@ -11,19 +11,28 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem {
+public class Food {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
+
+    private String discription;
+
+    private Long Price;
+
     @ManyToOne
-    private Food food;
+    private Category foodCategory;
 
-    private int quantity;
+    @Column(length = 1000)
+    @ElementCollection
+    private List<String> images;
 
-    private Long totalPrice;
+    private boolean available;
 
-    private List<String> ingredients;
+    @ManyToOne
+    private Restaurant restaurant;
 
 }
