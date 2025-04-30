@@ -1,30 +1,21 @@
 package com.anuwat.food_order_online.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Restaurant {
+public class IngrediensItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @ManyToOne
-    private User owner;
-
-    private String name;
-
-    private String description;
-
-    private String cuisineType;
-
-    @OneToOne
-    private Address address;
 
 }
