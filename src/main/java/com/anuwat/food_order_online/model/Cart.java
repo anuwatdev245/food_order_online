@@ -1,6 +1,5 @@
 package com.anuwat.food_order_online.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,19 +12,18 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ingredientCategory {
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String name;
+    @OneToOne
+    private User customer;
 
-    @JsonIgnore
-    @ManyToOne
-    private Restaurant restaurant;
+    private Long total;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<IngredientsItem> ingredients = new ArrayList<>();
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> item = new ArrayList<>();
 
 }
