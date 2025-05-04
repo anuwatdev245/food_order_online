@@ -26,7 +26,7 @@ public class User {
 
     private String password;
 
-    private   USER_ROLE role;
+    private   USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;
 
     @JsonIgnore //ไม่มีกาโชว์ฟิวน์นี้
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
