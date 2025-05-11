@@ -10,9 +10,11 @@ import com.anuwat.food_order_online.response.AuthResponse;
 import com.anuwat.food_order_online.service.CustomerUserDetailsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,19 +73,34 @@ public class AuthController {
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<AuthResponse> singin(@RequestBody LoginRequest req) {
+    public ResponseEntity<AuthResponse> signin(@RequestBody LoginRequest req) {
 
         String username = req.getEmail();
         String password = req.getPassword();
 
         Authentication authentication = authenticate(username, password);
 
-        return null;
+        String jwt = jwtProvider.generateToken(authentication);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setJwt(jwt);
+        authResponse.setMessage("Register success");
+
+        return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 
     private Authentication authenticate(String username, String password) {
 
-        return null;
+        UserDetails userDetails = customerUserDetailsService.loadUserByUsername(username);
+
+        if (userDetails == null) {
+            throw new BadCredentialsException("invalid username.....");
+        }
+
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+            throw new BadCredentialsException("invalid password.....");
+        }
+
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
 }
