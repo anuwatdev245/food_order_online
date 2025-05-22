@@ -28,20 +28,18 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final CustomerUserDetailsService customerUserDetailsService;
     private final CartRepository cartRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider, CustomerUserDetailsService customerUserDetailsService, CartRepository cartRepository) {
+    public AuthController(UserRepository userRepository, JwtProvider jwtProvider, CustomerUserDetailsService customerUserDetailsService, CartRepository cartRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
         this.customerUserDetailsService = customerUserDetailsService;
         this.cartRepository = cartRepository;
-
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/signup")

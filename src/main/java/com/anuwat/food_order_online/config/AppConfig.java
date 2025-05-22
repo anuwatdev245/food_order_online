@@ -3,6 +3,7 @@ package com.anuwat.food_order_online.config;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,7 +19,13 @@ import java.util.Collections;
 
 @CacheConfig
 @EnableWebSecurity
+@Configuration
 public class AppConfig {
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -58,9 +65,6 @@ public class AppConfig {
 
     }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 
 }
