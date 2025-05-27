@@ -3,7 +3,9 @@ package com.anuwat.food_order_online.service;
 import com.anuwat.food_order_online.config.JwtProvider;
 import com.anuwat.food_order_online.model.User;
 import com.anuwat.food_order_online.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
@@ -18,7 +20,7 @@ public class UserServiceImp implements UserService {
     @Override
     public User findUserByJwtToken(String jwt) throws Exception {
 
-        String email = jwtProvider.getEmailFromJwtTopken(jwt);
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
         User user = userRepository.findByEmail(email);
 
         return user;
