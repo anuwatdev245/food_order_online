@@ -6,11 +6,13 @@ import com.anuwat.food_order_online.model.Restaurant;
 import com.anuwat.food_order_online.model.User;
 import com.anuwat.food_order_online.repository.AddressRepository;
 import com.anuwat.food_order_online.repository.RestaurantRepository;
+import com.anuwat.food_order_online.repository.UserRepository;
 import com.anuwat.food_order_online.request.CreateRestaurantRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RestaurantServiceImp implements RestaurantService {
@@ -19,12 +21,12 @@ public class RestaurantServiceImp implements RestaurantService {
 
     private final AddressRepository addressRepository;
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public RestaurantServiceImp(RestaurantRepository restaurantRepository, AddressRepository addressRepository, UserService userService) {
+    public RestaurantServiceImp(RestaurantRepository restaurantRepository, AddressRepository addressRepository, UserRepository userRepository) {
         this.restaurantRepository = restaurantRepository;
         this.addressRepository = addressRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -59,41 +61,85 @@ public class RestaurantServiceImp implements RestaurantService {
             restaurant.setDescription(updateRestaurant.getDescription());
         }
 
-        return null;
+        if (restaurant.getName() != null) {
+            restaurant.setName(updateRestaurant.getName());
+        }
+
+        return restaurantRepository.save(restaurant);
     }
 
     @Override
     public void deleteRestaurant(Long restaurantId) throws Exception {
 
+        Restaurant restaurant = findRestaurantById(restaurantId);
+
+        restaurantRepository.delete(restaurant);
+
     }
 
     @Override
     public List<Restaurant> getAllRestaurant() {
-        return List.of();
+
+        return restaurantRepository.findAll();
     }
 
     @Override
-    public List<Restaurant> searchRestaurant() {
-        return List.of();
+    public List<Restaurant> searchRestaurant(String keyword) {
+
+        return restaurantRepository.findBySearchQuery(keyword);
     }
 
     @Override
     public Restaurant findRestaurantById(Long id) throws Exception {
-        return null;
+
+        Optional<Restaurant> opt = restaurantRepository.findById(id);
+
+        if (opt.isEmpty()) {
+            throw new Exception("restaurant not found with id"+ id);
+        }
+
+        return opt.get();
     }
 
     @Override
     public Restaurant getRestaurantByUserId(Long userId) throws Exception {
-        return null;
+
+        Restaurant restaurant = restaurantRepository.findByOwnerId(userId);
+        if (restaurant == null) {
+            throw new Exception("restaurant not found with owner id"+ userId);
+        }
+
+        return restaurant;
     }
 
     @Override
     public RestaurantDto addToFavorites(Long restaurantId, User user) throws Exception {
-        return null;
+
+        Restaurant restaurant = findRestaurantById(restaurantId);
+
+        RestaurantDto dto = new RestaurantDto();
+        dto.setDescription(restaurant.getDescription());
+        dto.setImages(restaurant.getImages());
+        dto.setTitle(restaurant.getName());
+        dto.setId(restaurantId);
+
+        if (user.getFavorites().contains(dto)) {
+            user.getFavorites().remove(dto);
+        }
+        else user.getFavorites().add(dto);
+
+        userRepository.save(user);
+
+        return dto;
     }
 
     @Override
     public Restaurant updateRestaurantStatus(Long id) throws Exception {
-        return null;
+
+        Restaurant restaurant = findRestaurantById(id);
+
+        restaurant.setOpen(!restaurant.isOpen());
+
+        return restaurantRepository.save(restaurant);
     }
 }
