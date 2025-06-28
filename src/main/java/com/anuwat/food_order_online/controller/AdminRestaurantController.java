@@ -23,7 +23,7 @@ public class AdminRestaurantController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody CreateRestaurantRequest req,
                                                        @RequestHeader("Authorization") String jwt) throws Exception {
 

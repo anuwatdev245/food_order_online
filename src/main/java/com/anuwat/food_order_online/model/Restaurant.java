@@ -32,7 +32,7 @@ public class Restaurant {
     @OneToOne
     private Address address;
 
-    @Embedded //composite Key
+    @Embedded //composite Key  กล่าวอีกนัยหนึ่งคือ คีย์คอมโพสิตเป็นคีย์ที่เกิดจากการรวมกันของคีย์ย่อยหลายๆ คีย์ เพื่อให้ได้คีย์ที่ไม่ซ้ำกัน
     private ContactInformation contactInformation;
 
     private String openingHours;
