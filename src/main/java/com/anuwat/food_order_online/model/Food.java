@@ -21,7 +21,7 @@ public class Food {
 
     private String name;
 
-    private String discription;
+    private String description;
 
     private Long Price;
 
