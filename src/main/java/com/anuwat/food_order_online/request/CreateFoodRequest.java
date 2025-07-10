@@ -2,9 +2,11 @@ package com.anuwat.food_order_online.request;
 
 import com.anuwat.food_order_online.model.Category;
 import com.anuwat.food_order_online.model.IngredientsItem;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class CreateFoodRequest {
 
     private String name;
