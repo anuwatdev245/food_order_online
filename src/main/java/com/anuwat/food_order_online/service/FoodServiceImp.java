@@ -41,12 +41,13 @@ public class FoodServiceImp implements FoodService{
     }
 
     @Override
-    public void deleteFood(Long foodId) throws Exception {
+    public Food deleteFood(Long foodId) throws Exception {
 
         Food food = findFoodById(foodId);
         food.setRestaurant(null);
         foodRepository.save(food);
 
+        return food;
     }
 
     @Override
