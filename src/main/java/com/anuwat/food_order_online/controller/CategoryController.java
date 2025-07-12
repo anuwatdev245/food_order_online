@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/admin/category")
+@RequestMapping("/api")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -21,7 +23,7 @@ public class CategoryController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/admin/category")
     public ResponseEntity<Category> createCategory(@RequestBody Category category,
                                                    @RequestHeader("Authorization") String jwt) throws Exception {
 
@@ -30,6 +32,16 @@ public class CategoryController {
         Category createCategory = categoryService.createCategory(category.getName(), user.getId());
 
         return new ResponseEntity<>(createCategory, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/category/restaurant")
+    public ResponseEntity <List<Category>> getRestaurantCategory(@RequestHeader("Authorization") String jwt) throws Exception {
+
+        User user = userService.findUserByJwtToken(jwt);
+
+        List<Category> categories = categoryService.findCategoryByRestaurantId(user.getId());
+
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
 }
