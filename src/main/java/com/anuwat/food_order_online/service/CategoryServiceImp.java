@@ -6,6 +6,7 @@ import com.anuwat.food_order_online.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImp implements CategoryService {
@@ -33,11 +34,19 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public List<Category> findCategoryByRestaurantId(Long id) {
-        return List.of();
+
+        return categoryRepository.findByRestaurantId(id);
     }
 
     @Override
-    public Category findCategoryById(Long id) {
-        return null;
+    public Category findCategoryById(Long id) throws Exception {
+
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+
+        if (optionalCategory.isEmpty()) {
+            throw new Exception("category not found");
+        }
+
+        return optionalCategory.get();
     }
 }
