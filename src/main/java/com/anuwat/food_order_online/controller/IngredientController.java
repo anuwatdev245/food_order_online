@@ -7,10 +7,7 @@ import com.anuwat.food_order_online.request.IngredientRequest;
 import com.anuwat.food_order_online.service.IngredientsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin/ingredients")
@@ -38,6 +35,15 @@ public class IngredientController {
         IngredientsItem item = ingredientsService.createIngredientsItem(req.getRestaurantId(), req.getName(), req.getCategoryId());
 
         return new ResponseEntity<>(item, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}/stoke")
+    public ResponseEntity<IngredientsItem> updateStock(
+            @PathVariable Long id) throws Exception {
+
+        IngredientsItem item = ingredientsService.updateStock(id);
+
+        return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
 }
