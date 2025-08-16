@@ -6,10 +6,10 @@ import com.anuwat.food_order_online.model.Food;
 import com.anuwat.food_order_online.model.User;
 import com.anuwat.food_order_online.repository.CartItemRepository;
 import com.anuwat.food_order_online.repository.CartRepository;
-import com.anuwat.food_order_online.repository.FoodRepository;
-import com.anuwat.food_order_online.request.addCartItemRequest;
+import com.anuwat.food_order_online.request.AddCartItemRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,7 +31,7 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
-    public CartItem addItemToCart(addCartItemRequest req, String jwt) throws Exception {
+    public CartItem addItemToCart(AddCartItemRequest req, String jwt) throws Exception {
 
         User user = userService.findUserByJwtToken(jwt);
 
@@ -115,15 +115,19 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
-    public Cart findCartByUserId(Long userId) throws Exception {
+    public Cart findCartByUserId(String jwt) throws Exception {
 
-        return cartRepository.findByCustomerId(userId);
+        User user = userService.findUserByJwtToken(jwt);
+
+        return cartRepository.findByCustomerId(user.getId());
     }
 
     @Override
-    public Cart clearCart(Long userId) throws Exception {
+    public Cart clearCart(String jwt) throws Exception {
 
-        Cart cart = findCartByUserId(userId);
+        User user = userService.findUserByJwtToken(jwt);
+
+        Cart cart = findCartByUserId(jwt);
         cart.getItem().clear();
 
         return cartRepository.save(cart);
