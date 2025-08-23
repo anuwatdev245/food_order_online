@@ -8,6 +8,6 @@ public class OrderRequest {
 
     private Long restaurantId;
 
-    private Address delivery;
+    private Address deliveryAddress;
 
 }
