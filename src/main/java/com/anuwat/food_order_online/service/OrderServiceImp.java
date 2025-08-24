@@ -87,7 +87,7 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public Order updateOrder(Long orderId, String orderStatus) throws Exception {
+    public Order updateOrderStatus(Long orderId, String orderStatus) throws Exception {
 
         Order order = findOrderById(orderId);
 
