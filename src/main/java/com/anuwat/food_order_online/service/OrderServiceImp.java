@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImp implements OrderService {
@@ -86,21 +88,56 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public Order updateOrder(Long orderId, String orderStatus) throws Exception {
-        return null;
+
+        Order order = findOrderById(orderId);
+
+        if (orderStatus.equals("OUT_FOR_DELIVERY")
+                || orderStatus.equals("DELIVERED")
+                || orderStatus.equals("COMPLETED")
+                || orderStatus.equals("PENDING")) {
+            order.setOrderStatus(orderStatus);
+            return orderRepository.save(order);
+        }
+
+        throw new Exception("Please select a valid order status");
     }
 
     @Override
     public void cancelOrder(Long orderId) throws Exception {
 
+        Order order = findOrderById(orderId);
+
+        orderRepository.deleteById(orderId);
+
     }
 
     @Override
     public List<Order> getUsersOrder(Long userId) {
-        return List.of();
+        return orderRepository.findByCustomerId(userId);
     }
 
     @Override
     public List<Order> getRestaurantsOrder(Long restaurantId, String orderStatus) throws Exception {
-        return List.of();
+
+        List<Order> orders = orderRepository.findByRestaurantId(restaurantId);
+
+        if (orderStatus != null) {
+            orders = orders.stream().filter(order ->
+                    order.getOrderStatus().equals(orderStatus)).collect(Collectors.toUnmodifiableList());
+        }
+
+        return orders;
+    }
+
+    @Override
+    public Order findOrderById(Long orderId) throws Exception {
+
+        Optional<Order> opt = orderRepository.findById(orderId);
+
+        if (opt.isEmpty()) {
+            throw new Exception("order not found");
+        }
+
+        return opt.get();
     }
 }
